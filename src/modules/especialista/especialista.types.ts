@@ -4,8 +4,8 @@ export interface IEspecialista {
   dtNasc: Date;
   especialidade: string;
   documentoHabilitacao: string;
-  telefone: string;
-  email: string;
+  telefone?: string;
+  email?: string;
   createAt?: string;
   updateAt?: string;
 }
@@ -16,8 +16,8 @@ export interface ICreateEspecialistaDTO {
   dtNasc: Date;
   especialidade: string;
   documentoHabilitacao: string;
-  telefone: string;
-  email: string;
+  telefone?: string;
+  email?: string;
 }
 
 export interface IUpdateEspecialistaDTO {

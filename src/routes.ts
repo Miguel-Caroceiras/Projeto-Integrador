@@ -11,6 +11,6 @@ routes.get("/teste", (request, response) => {
 
 routes.use("/pacientes", patientRoutes);
 
-routes.use("/especialista", especialistaRoutes);
+routes.use("/especialistas", especialistaRoutes);
 
 export default routes;

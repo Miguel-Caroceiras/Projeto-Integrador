@@ -28,12 +28,12 @@ const especialistaSchema = new Schema<IEspecialista>(
     },
     telefone: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     email: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     }
   },

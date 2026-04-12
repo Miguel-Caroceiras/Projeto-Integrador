@@ -33,7 +33,13 @@ class EspecialistaService {
   }
 
   public async delete(id: string) {
-    return await Especialista.findByIdAndUpdate(id);
+    const deletedEspecialista = Especialista.findByIdAndDelete(id);
+
+    if (!deletedEspecialista) {
+      throw new Error("Especialista não encontrado");
+    }
+
+    return deletedEspecialista;
   }
 }
 
