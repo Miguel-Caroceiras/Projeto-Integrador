@@ -1,5 +1,6 @@
 import { Router } from "express";
 import patientRoutes from "./modules/patient/patient.routes.js";
+import especialistaRoutes from "./modules/especialista/especialista.routes.js";
 const routes = Router();
 
 routes.get("/teste", (request, response) => {
@@ -9,4 +10,7 @@ routes.get("/teste", (request, response) => {
 });
 
 routes.use("/pacientes", patientRoutes);
+
+routes.use("/especialista", especialistaRoutes);
+
 export default routes;
