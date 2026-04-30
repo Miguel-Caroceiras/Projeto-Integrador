@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 import type { IEspecialista } from "./especialista.types.js";
 
-const especialistaSchema = new Schema<IEspecialista>(
+export const especialistaSchema = new Schema<IEspecialista>(
   {
     nome:{
       type: String,

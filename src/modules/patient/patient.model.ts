@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 import type { IPatient } from "./patient.types.js";
 
-const patientSchema = new Schema<IPatient>(
+export const patientSchema = new Schema<IPatient>(
   {
     name: {
       type: String,
