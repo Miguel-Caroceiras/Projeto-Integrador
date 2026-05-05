@@ -1,7 +1,8 @@
 import { Router } from "express";
 import patientRoutes from "./modules/patient/patient.routes.js";
-import especialistaRoutes from "./modules/especialista/especialista.routes.js";
+import expertRoutes from "./modules/expert/expert.routes.js";
 import specialtyRoutes from "./modules/specialty/specialty.routes.js";
+import schedulingRoutes from "./modules/scheduling/scheduling.routes.js";
 const routes = Router();
 
 routes.get("/teste", (request, response) => {
@@ -12,8 +13,10 @@ routes.get("/teste", (request, response) => {
 
 routes.use("/pacientes", patientRoutes);
 
-routes.use("/especialistas", especialistaRoutes);
+routes.use("/especialistas", expertRoutes);
 
 routes.use("/especialidades", specialtyRoutes);
+
+routes.use("/agendamentos", schedulingRoutes);
 
 export default routes;

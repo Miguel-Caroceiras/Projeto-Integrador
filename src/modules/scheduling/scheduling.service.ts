@@ -24,15 +24,15 @@ class SchedulingService {
     const scheduling = await Scheduling.create({
       dateScheduling: data.dateScheduling,
       status: data.status,
-      expertId: data.expertId,
-      patientId: data.patientId,
+      expert: data.expert,
+      patient: data.patient,
     });
 
     return scheduling;
   }
 
   public async find() {
-    return await Scheduling.find().populate("Patient").populate("Especialista");
+    return await Scheduling.find().populate("patient").populate("expert");
   }
 
   public async update(id: string, data: IUpdateSchedulingDTO) {

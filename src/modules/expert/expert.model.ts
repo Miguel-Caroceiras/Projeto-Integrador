@@ -1,10 +1,10 @@
 import mongoose, { Schema } from "mongoose";
 
-import type { IEspecialista } from "./especialista.types.js";
+import type { IExpert } from "./expert.types.js";
 
-export const especialistaSchema = new Schema<IEspecialista>(
+export const expertSchema = new Schema<IExpert>(
   {
-    nome:{
+    name: {
       type: String,
       required: true,
       trim: true,
@@ -14,19 +14,20 @@ export const especialistaSchema = new Schema<IEspecialista>(
       required: true,
       trim: true,
     },
-    dtNasc: {
+    dateOfBirth: {
       type: Date,
       required: true,
     },
-    especialidade:{
+    specialty: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "Specialty"
+    },
+    professionalDocument: {
       type: String,
       required: true,
     },
-    documentoHabilitacao: {
-      type: String,
-      required: true,
-    },
-    telefone: {
+    phone: {
       type: String,
       required: false,
       trim: true,
@@ -35,13 +36,13 @@ export const especialistaSchema = new Schema<IEspecialista>(
       type: String,
       required: false,
       trim: true,
-    }
+    },
   },
   {
     timestamps: true,
   },
 );
 
-const Especialista = mongoose.model<IEspecialista>("Especialista", especialistaSchema);
+const Expert = mongoose.model<IExpert>("Expert", expertSchema);
 
-export default Especialista;
+export default Expert;

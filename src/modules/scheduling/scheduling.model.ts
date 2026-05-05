@@ -13,12 +13,12 @@ const schedulingSchema = new Schema<IScheduling>(
       required: true,
       trim: true,
     },
-    expertId: {
+    expert: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: "Especialista"
+      ref: "Expert"
     },
-    patientId: {
+    patient: {
       type: Schema.Types.ObjectId,
       required: true,
       ref: "Patient"

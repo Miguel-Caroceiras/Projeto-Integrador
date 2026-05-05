@@ -5,12 +5,12 @@ import schedulingService from "./scheduling.service.js";
 
 class SchedulingController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const { dateScheduling, status, patientId, expertId } = request.body ?? {};
+    const { dateScheduling, status, patient, expert } = request.body ?? {};
     const scheduling = await schedulingService.create({
       dateScheduling,
       status,
-      expertId,
-      patientId
+      expert,
+      patient
     });
 
     return response.status(201).json(scheduling);
@@ -23,7 +23,7 @@ class SchedulingController {
 
   public async update(request: Request, response: Response): Promise<Response> {
     const { id } = request.params ?? "";
-    const { dateScheduling, status, patientId, expertId } = request.body ?? {};
+    const { dateScheduling, status, patient, expert } = request.body ?? {};
 
     if (!id || typeof id !== "string") {
       return response.status(400).json({
@@ -33,8 +33,8 @@ class SchedulingController {
     const scheduling = await schedulingService.update(id, {
       dateScheduling,
       status,
-      expertId,
-      patientId
+      expert,
+      patient
     });
     return response.json(scheduling);
   }
