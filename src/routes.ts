@@ -1,7 +1,11 @@
-import express from "express";
-import categoryRoutes from "./modules/category/category.routes";
+import { Router } from "express";
+// import patientRoutes from "./modules/patient/patient.routes";
+// import expertRoutes from "./modules/expert/expert.routes";
+// import specialtyRoutes from "./modules/specialty/specialty.routes";
+// import schedulingRoutes from "./modules/scheduling/scheduling.routes";
+import administratorRoutes from "./modules/administrator/Administrator.routes";
 
-const routes = express.Router();
+const routes = Router();
 
 routes.get("/teste", (request, response) => {
   return response.status(200).json({
@@ -9,6 +13,10 @@ routes.get("/teste", (request, response) => {
   });
 });
 
-routes.use("/category", categoryRoutes);
+// routes.use("/pacientes", patientRoutes);
+// routes.use("/especialistas", expertRoutes);
+// routes.use("/especialidades", specialtyRoutes);
+// routes.use("/agendamentos", schedulingRoutes);
+routes.use("/administradores", administratorRoutes);
 
 export default routes;
