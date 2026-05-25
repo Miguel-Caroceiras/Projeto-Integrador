@@ -3,8 +3,8 @@ import { Router } from "express";
 import patientRoutes from "./modules/patient/patient.routes.js";
 import expertRoutes from "./modules/expert/expert.routes.js";
 import specialtyRoutes from "./modules/specialty/specialty.routes.js";
-import schedulingRoutes from "./modules/scheduling/scheduling.routes.js
-import administratorRoutes from "./modules/administrator/Administrator.routes";
+import schedulingRoutes from "./modules/scheduling/scheduling.routes.js";
+import administratorRoutes from "./modules/administrator/Administrator.routes.js";
 
 const routes = Router();
 
