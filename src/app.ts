@@ -1,9 +1,10 @@
 import express from "express";
+import type { Express } from "express";
 import cors from "cors";
-import routes from "./routes";
+import routes from "./routes.js";
 
 class App {
-  public server;
+  public server: Express;
 
   constructor() {
     this.server = express();
@@ -22,6 +23,4 @@ class App {
   }
 }
 
-const app = new App().server;
-
-export default app;
+export default new App().server;

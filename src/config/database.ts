@@ -1,19 +1,15 @@
 import mongoose from "mongoose";
-import "dotenv/config";
 
 class Database {
   public async connect(): Promise<void> {
-    const mongoUrl = process.env.MONGO_URL;
-
-    if (!mongoUrl) {
-      throw new Error("MONGO_URL não definida");
+    try {
+      await mongoose.connect(process.env.MONGO_URI as string);
+      console.log("MongoDB conectado com sucesso");
+    } catch (error) {
+      console.log("Erro ao conectar ao MongoDB", error);
+      process.exit(1);
     }
-
-    await mongoose.connect(mongoUrl);
-    console.log("Banco conectado com sucesso");
   }
 }
 
-const database = new Database();
-
-export default database;
+export default new Database();
