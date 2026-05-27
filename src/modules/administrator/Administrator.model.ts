@@ -22,6 +22,11 @@ export const administratorSchema = new Schema<IAdministrator>(
       required: true,
       trim: true,
     },
+    email: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     address: {
       type: String,
       required: true,

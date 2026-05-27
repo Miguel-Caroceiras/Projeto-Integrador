@@ -4,6 +4,7 @@ export interface IPatient {
   dateOfBirth: Date;
   email: string;
   phone: string;
+  address: string;
   createAt?: string;
   updateAt?: string;
 }
@@ -14,6 +15,7 @@ export interface ICreatePatientDTO {
   dateOfBirth: Date;
   email: string;
   phone: string;
+  address: string;
 }
 
 export interface IUpdatePatientDTO {
@@ -22,4 +24,5 @@ export interface IUpdatePatientDTO {
   dateOfBirth?: Date;
   email?: string;
   phone?: string;
+  address?: string;
 }

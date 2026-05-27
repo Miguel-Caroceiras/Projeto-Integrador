@@ -26,6 +26,7 @@ class PatientService {
       dateOfBirth: data.dateOfBirth,
       email: data.email,
       phone: data.phone,
+      address: data.address,
     });
 
     return patient;

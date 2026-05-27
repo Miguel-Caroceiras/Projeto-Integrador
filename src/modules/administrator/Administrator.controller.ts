@@ -3,12 +3,13 @@ import administratorService from "./Administrator.service.js";
 
 class AdministratorController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const { name, cpf, dateOfBirth, phone, address } = request.body ?? {};
+    const { name, cpf, dateOfBirth, phone, email, address } = request.body ?? {};
     const administrator = await administratorService.create({
       name,
       cpf,
       dateOfBirth,
       phone,
+      email,
       address,
     });
     return response.status(201).json(administrator);
@@ -21,7 +22,7 @@ class AdministratorController {
 
   public async update(request: Request, response: Response): Promise<Response> {
     const { id } = request.params ?? "";
-    const { name, cpf, dateOfBirth, phone, address } = request.body;
+    const { name, cpf, dateOfBirth, phone, email, address } = request.body;
 
     if (!id || typeof id !== "string") {
       return response.status(400).json({
@@ -34,6 +35,7 @@ class AdministratorController {
       cpf,
       dateOfBirth,
       phone,
+      email,
       address,
     });
     return response.json(administrator);
