@@ -20,12 +20,18 @@ import type {
 
 class PatientService {
   public async create(data: ICreatePatientDTO) {
+    if (data.sex !== "M" && data.sex !== "F") {
+      console.log("erro no sexo");
+      return;
+    }
     const patient = await Patient.create({
       name: data.name,
       cpf: data.cpf ?? "",
       dateOfBirth: data.dateOfBirth,
       email: data.email,
       phone: data.phone,
+      status: data.status ?? "A",
+      sex: data.sex,
     });
 
     return patient;

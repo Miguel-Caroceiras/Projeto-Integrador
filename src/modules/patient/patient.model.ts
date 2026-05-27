@@ -17,7 +17,6 @@ export const patientSchema = new Schema<IPatient>(
     dateOfBirth: {
       type: Date,
       required: true,
-
     },
     email: {
       type: String,
@@ -25,6 +24,16 @@ export const patientSchema = new Schema<IPatient>(
       trim: true,
     },
     phone: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    status: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    sex: {
       type: String,
       required: true,
       trim: true,
