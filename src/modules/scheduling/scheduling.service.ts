@@ -21,6 +21,9 @@ import type {
 
 class SchedulingService {
   public async create(data: ICreateSchedulingDTO) {
+    if (data.dateScheduling < new Date()) {
+      return "Não é possível agendar uma consulta a um dia anterior";
+    }
     const scheduling = await Scheduling.create({
       dateScheduling: data.dateScheduling,
       status: data.status,
