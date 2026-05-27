@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import administratorService from "./Administrator.service";
+import administratorService from "./Administrator.service.js";
 
 class AdministratorController {
   public async create(request: Request, response: Response): Promise<Response> {

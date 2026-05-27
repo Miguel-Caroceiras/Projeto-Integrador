@@ -1,4 +1,4 @@
-import Administrator from "./Administrator.model";
+import Administrator from "./Administrator.model.js";
 import type {
   ICreateAdministratorDTO,
   IUpdateAdministratorDTO,
