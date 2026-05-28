@@ -5,6 +5,8 @@ export interface IPatient {
   email: string;
   phone: string;
   address: string;
+  status: string;
+  sex: string;
   createAt?: string;
   updateAt?: string;
 }
@@ -16,6 +18,8 @@ export interface ICreatePatientDTO {
   email: string;
   phone: string;
   address: string;
+  status: string;
+  sex: string;
 }
 
 export interface IUpdatePatientDTO {
@@ -25,4 +29,6 @@ export interface IUpdatePatientDTO {
   email?: string;
   phone?: string;
   address?: string;
+  status?: string;
+  sex?: string;
 }
