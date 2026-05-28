@@ -2,6 +2,7 @@ export interface IAdministrator {
   name: string;
   cpf: string;
   dateOfBirth: Date;
+  email: string;
   phone: string;
   address: string;
   createdAt?: string;
@@ -13,6 +14,7 @@ export interface ICreateAdministratorDTO {
   cpf: string;
   dateOfBirth: Date;
   phone: string;
+  email: string;
   address: string;
 }
 
@@ -21,5 +23,6 @@ export interface IUpdateAdministratorDTO {
   cpf?: string;
   dateOfBirth?: Date;
   phone?: string;
+  email?: string;
   address?: string;
 }

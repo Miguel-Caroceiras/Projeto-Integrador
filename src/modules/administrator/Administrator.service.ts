@@ -11,6 +11,7 @@ class AdministratorService {
       cpf: data.cpf ?? "",
       dateOfBirth: data.dateOfBirth,
       phone: data.phone,
+      email: data.email,
       address: data.address,
     });
     return administrator;
@@ -21,9 +22,7 @@ class AdministratorService {
   }
 
   public async update(id: string, data: IUpdateAdministratorDTO) {
-    const updatedAdministrator = await Administrator.findByIdAndUpdate(
-      id,
-      data,
+    const updatedAdministrator = await Administrator.findByIdAndUpdate(id, data,
       {
         new: true,
         runValidators: true,
@@ -32,6 +31,7 @@ class AdministratorService {
     if (!updatedAdministrator) {
       throw new Error("Administrador não encontrado");
     }
+
     return updatedAdministrator;
   }
 

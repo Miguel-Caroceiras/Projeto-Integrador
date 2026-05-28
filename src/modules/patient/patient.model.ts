@@ -1,5 +1,4 @@
 import mongoose, { Schema } from "mongoose";
-
 import type { IPatient } from "./patient.types.js";
 
 export const patientSchema = new Schema<IPatient>(
@@ -28,6 +27,11 @@ export const patientSchema = new Schema<IPatient>(
       required: true,
       trim: true,
     },
+    address: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     status: {
       type: String,
       required: true,
@@ -39,6 +43,7 @@ export const patientSchema = new Schema<IPatient>(
       trim: true,
     },
   },
+  
   {
     timestamps: true,
   },
