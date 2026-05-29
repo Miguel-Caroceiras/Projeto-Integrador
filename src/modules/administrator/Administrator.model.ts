@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import type { IAdministrator } from "./Administrator.types.js";
+import type { IAdministrator } from "./administrator.types.js";
 
 export const administratorSchema = new Schema<IAdministrator>(
   {

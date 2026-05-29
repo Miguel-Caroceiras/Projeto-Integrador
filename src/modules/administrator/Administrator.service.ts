@@ -1,8 +1,8 @@
-import Administrator from "./Administrator.model.js";
+import Administrator from "./administrator.model.js";
 import type {
   ICreateAdministratorDTO,
   IUpdateAdministratorDTO,
-} from "./Administrator.types.js";
+} from "./administrator.types.js";
 
 class AdministratorService {
   public async create(data: ICreateAdministratorDTO) {

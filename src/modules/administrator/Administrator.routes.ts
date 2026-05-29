@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import administratorController from "./Administrator.controller.js";
+import administratorController from "./administrator.controller.js";
 
 const administratorRoutes = Router();
 
