@@ -6,6 +6,13 @@ import patientService from "./patient.service.js";
 class PatientController {
   public async create(request: Request, response: Response): Promise<Response> {
     const { name, cpf, dateOfBirth, email, phone, status, sex, address } = request.body ?? {};
+
+    var cpfIsValid = patientService.validateCpf(cpf);
+
+    if(!cpfIsValid){
+      return response.status(400).json('Cpf inválido, informe novamente ou revise o cpf informado!');
+    }
+
     const patient = await patientService.create({
       name,
       cpf,
