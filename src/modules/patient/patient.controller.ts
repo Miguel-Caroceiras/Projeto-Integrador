@@ -5,7 +5,8 @@ import patientService from "./patient.service.js";
 
 class PatientController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const { name, cpf, dateOfBirth, email, phone, status, sex } = request.body ?? {};
+    const { name, cpf, dateOfBirth, email, phone, status, sex, address } =
+      request.body ?? {};
     const patient = await patientService.create({
       name,
       cpf,
@@ -14,6 +15,7 @@ class PatientController {
       phone,
       status,
       sex,
+      address,
     });
 
     return response.status(201).json(patient);
@@ -26,7 +28,7 @@ class PatientController {
 
   public async update(request: Request, response: Response): Promise<Response> {
     const { id } = request.params ?? "";
-    const { name, cpf, dateOfBirth, email, phone, status, sex } = request.body;
+    const { name, cpf, dateOfBirth, email, phone, status, sex, address } = request.body;
 
     if (!id || typeof id !== "string") {
       return response.status(400).json({
@@ -40,7 +42,8 @@ class PatientController {
       email,
       phone,
       status,
-      sex
+      sex,
+      address
     });
     return response.json(patient);
   }

@@ -4,10 +4,16 @@ export interface IPatient {
   dateOfBirth: Date;
   email: string;
   phone: string;
-  status: string;
   sex: string;
-  createAt?: string;
-  updateAt?: string;
+  status?: string;
+  address?: {
+    cep?: string;
+    street?: string;
+    complement?: string;
+    number?: string;
+    city?: string;
+    state?: string;
+  };
 }
 
 export interface ICreatePatientDTO {
@@ -16,8 +22,16 @@ export interface ICreatePatientDTO {
   dateOfBirth: Date;
   email: string;
   phone: string;
-  status: string;
   sex: string;
+  status?: string;
+  address: {
+    cep?: string;
+    street?: string;
+    complement?: string;
+    number?: string;
+    city?: string;
+    state?: string;
+  };
 }
 
 export interface IUpdatePatientDTO {
@@ -26,6 +40,14 @@ export interface IUpdatePatientDTO {
   dateOfBirth?: Date;
   email?: string;
   phone?: string;
-  status?: string;
   sex?: string;
+  status?: string;
+  address?: {
+    cep?: string;
+    street?: string;
+    complement?: string;
+    number?: string;
+    city?: string;
+    state?: string;
+  };
 }

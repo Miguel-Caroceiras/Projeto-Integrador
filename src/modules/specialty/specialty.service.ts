@@ -33,7 +33,7 @@ class SpecialtyService {
 
   public async update(id: string, data: IUpdateSpecialtyDTO) {
     const updatedSpecialty = await Specialty.findByIdAndUpdate(id, data, {
-      new: true,
+      returnDocument: "after",
       runValidators: true,
     });
 

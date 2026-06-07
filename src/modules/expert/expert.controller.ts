@@ -1,78 +1,53 @@
-// toda vez que bater num endpoint ele rebate aqui
-
 import type { Request, Response } from "express";
-import ExpertService from "./expert.service.js";
+import { ExpertService } from "./expert.service.js";
+import { ICreateExpertDTO, IUpdateExpertDTO } from "./expert.types.js";
 
-class ExpertController {
+export class ExpertController {
+  constructor(private expertService: ExpertService) {}
+
   public async create(request: Request, response: Response): Promise<Response> {
-    const {
-      name,
-      cpf,
-      dateOfBirth,
-      specialty,
-      professionalDocument,
-      phone,
-      email,
-    } = request.body ?? {};
-    const expert = await ExpertService.create({
-      name,
-      cpf,
-      dateOfBirth,
-      specialty,
-      professionalDocument,
-      phone,
-      email,
-    });
-
-    return response.status(201).json(expert);
+    try {
+      const body = request.body as ICreateExpertDTO;
+      const expert = await this.expertService.create(body);
+      return response.status(201).json(expert);
+    } catch (error: any) {
+      return response.status(400).json({ message: error.message });
+    }
   }
 
-  public async find(request: Request, response: Response) {
-    const expert = await ExpertService.findAll();
-    return response.status(200).json(expert);
+  public async find(request: Request, response: Response): Promise<Response> {
+    try {
+      const experts = await this.expertService.findAll();
+      return response.status(200).json(experts);
+    } catch (error: any) {
+      return response.status(500).json({ message: error.message });
+    }
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
-    const { id } = request.params ?? "";
-    const {
-      name,
-      cpf,
-      dateOfBirth,
-      specialty,
-      professionalDocument,
-      phone,
-      email,
-    } = request.body;
+    const { id } = request.params;
+    if (!id || typeof id !== "string")
+      return response.status(400).json({ message: "Id invalido" });
 
-    if (!id || typeof id !== "string") {
-      return response.status(400).json({
-        message: "Id invalido",
-      });
+    try {
+      const body = request.body as IUpdateExpertDTO;
+      const expert = await this.expertService.update(id, body);
+      return response.json(expert);
+    } catch (error: any) {
+      return response.status(400).json({ message: error.message });
     }
-
-    const expert = await ExpertService.update(id, {
-      name,
-      cpf,
-      dateOfBirth,
-      specialty,
-      professionalDocument,
-      phone,
-      email,
-    });
-    return response.json(expert);
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {
-    const { id } = request.params ?? "";
-    if (!id || typeof id !== "string") {
-      return response.status(400).json({
-        message: "Id invalido",
-      });
-    }
-    const expert = await ExpertService.delete(id);
+    const { id } = request.params;
+    if (!id || typeof id !== "string")
+      return response.status(400).json({ message: "Id invalido" });
 
-    return response.json(expert);
+    try {
+      const expert = await this.expertService.delete(id);
+      return response.json(expert);
+    } catch (error: any) {
+      return response.status(404).json({ message: error.message });
+    }
   }
 }
-
-export default new ExpertController();

@@ -11,6 +11,7 @@
         
 */
 
+import { after } from "node:test";
 import Patient from "./patient.model.js";
 import type {
   IPatient,
@@ -26,12 +27,13 @@ class PatientService {
     }
     const patient = await Patient.create({
       name: data.name,
-      cpf: data.cpf ?? "",
-      dateOfBirth: data.dateOfBirth,
+      cpf: data.cpf,
+      dateOfBirth: new Date(data.dateOfBirth),
       email: data.email,
       phone: data.phone,
       status: data.status ?? "A",
       sex: data.sex,
+      address: data?.address,
     });
 
     return patient;
@@ -43,7 +45,7 @@ class PatientService {
 
   public async update(id: string, data: IUpdatePatientDTO) {
     const updatedPatient = await Patient.findByIdAndUpdate(id, data, {
-      new: true,
+      returnDocument: "after",
       runValidators: true,
     });
 
