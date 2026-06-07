@@ -4,7 +4,6 @@ import patientRoutes from "./modules/patient/patient.routes.js";
 import expertRoutes from "./modules/expert/expert.routes.js";
 import specialtyRoutes from "./modules/specialty/specialty.routes.js";
 import schedulingRoutes from "./modules/scheduling/scheduling.routes.js";
-import administratorRoutes from "./modules/administrator/administrator.routes.js";
 
 const routes = Router();
 
@@ -22,6 +21,5 @@ routes.use("/especialidades", specialtyRoutes);
 
 routes.use("/agendamentos", schedulingRoutes);
 
-routes.use("/administradores", administratorRoutes);
 
 export default routes;
