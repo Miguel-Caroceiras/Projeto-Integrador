@@ -31,7 +31,6 @@ class AdministratorService {
     if (!updatedAdministrator) {
       throw new Error("Administrador não encontrado");
     }
-
     return updatedAdministrator;
   }
 

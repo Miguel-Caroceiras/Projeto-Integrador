@@ -40,7 +40,7 @@ class SchedulingService {
 
   public async update(id: string, data: IUpdateSchedulingDTO) {
     const updatedScheduling = await Scheduling.findByIdAndUpdate(id, data, {
-      new: true,
+      returnDocument: "after",
       runValidators: true,
     });
 

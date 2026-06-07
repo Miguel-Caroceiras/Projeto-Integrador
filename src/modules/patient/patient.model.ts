@@ -11,6 +11,7 @@ export const patientSchema = new Schema<IPatient>(
     cpf: {
       type: String,
       required: true,
+      unique: true,
       trim: true,
     },
     dateOfBirth: {
@@ -27,11 +28,6 @@ export const patientSchema = new Schema<IPatient>(
       required: true,
       trim: true,
     },
-    address: {
-      type: String,
-      required: true,
-      trim: true,
-    },
     status: {
       type: String,
       required: true,
@@ -41,6 +37,14 @@ export const patientSchema = new Schema<IPatient>(
       type: String,
       required: true,
       trim: true,
+    },
+    address:{
+      cep: { type: String, trim: true },
+      street: { type: String, trim: true },
+      complement: { type: String, trim: true },
+      number: { type: String, trim: true },
+      city: { type: String, trim: true },
+      state: { type: String, trim: true },
     },
   },
   

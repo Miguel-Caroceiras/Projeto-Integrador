@@ -20,7 +20,11 @@ class AdministratorService {
     }
     async update(id, data) {
         const updatedAdministrator = await Administrator_model_js_1.default.findByIdAndUpdate(id, data, {
+<<<<<<< HEAD
             new: true,
+=======
+            
+>>>>>>> rafadev
             runValidators: true,
         });
         if (!updatedAdministrator) {

@@ -21,7 +21,7 @@ class PatientController {
       phone,
       status,
       sex,
-      address
+      address,
     });
 
     return response.status(201).json(patient);
@@ -47,9 +47,9 @@ class PatientController {
       dateOfBirth,
       email,
       phone,
-      address,
       status,
-      sex
+      sex,
+      address
     });
     return response.json(patient);
   }

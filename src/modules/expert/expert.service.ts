@@ -1,46 +1,37 @@
-import Expert from "./expert.model.js";
-import type {
-  IExpert,
+import {
+  IExpertRepository,
   ICreateExpertDTO,
   IUpdateExpertDTO,
 } from "./expert.types.js";
 
-class ExpertService {
-  public async create(data: ICreateExpertDTO) {
-    const expert = await Expert.create({
-      name: data.name,
-      cpf: data.cpf,
-      dateOfBirth: data.dateOfBirth,
-      specialty: data.specialty,
-      professionalDocument: data.professionalDocument,
-      phone: data.phone ?? "",
-      email: data.email ?? "",
-    });
+export class ExpertService {
+  constructor(private expertRepository: IExpertRepository) {}
 
-    return expert;
+  public async create(data: ICreateExpertDTO) {
+    return await this.expertRepository.create(data);
   }
 
   public async findAll() {
-    return await Expert.find().populate("specialty");
+    return await this.expertRepository.findAll();
   }
 
   public async findById(id: string) {
-    return await Expert.findById(id);
+    const expert = await this.expertRepository.findById(id);
+    if (!expert) throw new Error("Especialista não encontrado");
+    return expert;
   }
 
   public async update(id: string, data: IUpdateExpertDTO) {
-    return await Expert.findByIdAndUpdate(id, data, { new: true });
+    const updatedExpert = await this.expertRepository.update(id, data);
+    if (!updatedExpert)
+      throw new Error("Especialista não encontrado para atualização");
+    return updatedExpert;
   }
 
   public async delete(id: string) {
-    const deletedExpert = Expert.findByIdAndDelete(id);
-
-    if (!deletedExpert) {
-      throw new Error("Especialista não encontrado");
-    }
-
+    const deletedExpert = await this.expertRepository.delete(id);
+    if (!deletedExpert)
+      throw new Error("Especialista não encontrado para exclusão");
     return deletedExpert;
   }
 }
-
-export default new ExpertService();
