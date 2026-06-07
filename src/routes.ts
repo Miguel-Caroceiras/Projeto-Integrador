@@ -4,11 +4,7 @@ import patientRoutes from "./modules/patient/patient.routes.js";
 import expertRoutes from "./modules/expert/expert.routes.js";
 import specialtyRoutes from "./modules/specialty/specialty.routes.js";
 import schedulingRoutes from "./modules/scheduling/scheduling.routes.js";
-<<<<<<< HEAD
 import administratorRoutes from "./modules/administrator/administrator.routes.js";
-=======
-import administratorRoutes from "./modules/administrator/Administrator.routes.js";
->>>>>>> rafadev
 
 const routes = Router();
 
