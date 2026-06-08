@@ -11,8 +11,8 @@ export class ExpertService {
     return await this.expertRepository.create(data);
   }
 
-  public async findAll() {
-    return await this.expertRepository.findAll();
+  public async findAll(specialtyId?: string) {
+    return await this.expertRepository.findAll(specialtyId);
   }
 
   public async findById(id: string) {

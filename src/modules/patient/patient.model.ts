@@ -32,13 +32,16 @@ export const patientSchema = new Schema<IPatient>(
       type: String,
       required: true,
       trim: true,
+      default: "A",
+      enum: ["A", "I"],
     },
     sex: {
       type: String,
       required: true,
       trim: true,
+      enum:["F", "M"]
     },
-    address:{
+    address: {
       cep: { type: String, trim: true },
       street: { type: String, trim: true },
       complement: { type: String, trim: true },
@@ -47,7 +50,7 @@ export const patientSchema = new Schema<IPatient>(
       state: { type: String, trim: true },
     },
   },
-  
+
   {
     timestamps: true,
   },

@@ -1,65 +1,43 @@
-/*
-    Ele sera responsavel por:
-        -Criar Categpria
-        -Listar categoria
-        -Buscar categoria por id
-        atualizar categoria
-        excluir categoria
-        não receve req e res
-        não define rotas
-        não sabe nada de HTTP
-        
-*/
-
-import schedulingController from "./scheduling.controller.js";
-import Scheduling from "./scheduling.model.js";
-import type {
-  IScheduling,
+import {
+  ISchedulingRepository,
   ICreateSchedulingDTO,
   IUpdateSchedulingDTO,
 } from "./scheduling.types.js";
 
-class SchedulingService {
-  public async create(data: ICreateSchedulingDTO) {
-    if (data.dateScheduling < new Date()) {
-      return "Não é possível agendar uma consulta a um dia anterior";
-    }
-    const scheduling = await Scheduling.create({
-      dateScheduling: data.dateScheduling,
-      status: data.status,
-      expert: data.expert,
-      patient: data.patient,
-    });
+export class SchedulingService {
+  constructor(private schedulingRepository: ISchedulingRepository) {}
 
-    return scheduling;
+  public async create(data: ICreateSchedulingDTO) {
+    const scheduleDate = new Date(data.dateScheduling);
+    
+    if (scheduleDate < new Date()) {
+      throw new Error("Não é possível agendar uma consulta para um dia anterior");
+    }
+
+    return await this.schedulingRepository.create(data);
   }
 
   public async find() {
-    return await Scheduling.find().populate("patient").populate("expert");
+    return await this.schedulingRepository.find();
   }
 
   public async update(id: string, data: IUpdateSchedulingDTO) {
-    const updatedScheduling = await Scheduling.findByIdAndUpdate(id, data, {
-      returnDocument: "after",
-      runValidators: true,
-    });
-
+    const updatedScheduling = await this.schedulingRepository.update(id, data);
+    
     if (!updatedScheduling) {
-      throw new Error("Paciente não encontrado");
+      throw new Error("Agendamento não encontrado para atualização");
     }
 
     return updatedScheduling;
   }
 
   public async delete(id: string) {
-    const deletedScheduling = Scheduling.findByIdAndDelete(id);
-
+    const deletedScheduling = await this.schedulingRepository.delete(id);
+    
     if (!deletedScheduling) {
-      throw new Error("Paciente não encontrado");
+      throw new Error("Agendamento não encontrado para exclusão");
     }
 
     return deletedScheduling;
   }
 }
-
-export default new SchedulingService();

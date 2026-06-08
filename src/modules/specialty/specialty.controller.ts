@@ -1,49 +1,55 @@
-// toda vez que bater num endpoint ele rebate aqui
-
 import type { Request, Response } from "express";
-import specialtyService from "./specialty.service.js";
+import { SpecialtyService } from "./specialty.service.js";
+import { ICreateSpecialtyDTO, IUpdateSpecialtyDTO } from "./specialty.types.js";
 
-class SpecialtyController {
+export class SpecialtyController {
+  constructor(private specialtyService: SpecialtyService) {}
+
   public async create(request: Request, response: Response): Promise<Response> {
-    const { name } = request.body ?? {};
-    const specialty = await specialtyService.create({
-      name,
-    });
-
-    return response.status(201).json(specialty);
+    try {
+      const body = request.body as ICreateSpecialtyDTO;
+      const specialty = await this.specialtyService.create(body);
+      return response.status(201).json(specialty);
+    } catch (error: any) {
+      return response.status(400).json({ message: error.message });
+    }
   }
 
-  public async find(request: Request, response: Response) {
-    const specialtys = await specialtyService.find();
-    return response.status(200).json(specialtys);
+  public async find(request: Request, response: Response): Promise<Response> {
+    try {
+      const specialties = await this.specialtyService.find();
+      return response.status(200).json(specialties);
+    } catch (error: any) {
+      return response.status(500).json({ message: error.message });
+    }
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
-    const { id } = request.params ?? "";
-    const { name } = request.body;
-
+    const { id } = request.params;
     if (!id || typeof id !== "string") {
-      return response.status(400).json({
-        message: "Id invalido",
-      });
+      return response.status(400).json({ message: "Id inválido" });
     }
-    const specialty = await specialtyService.update(id, {
-      name,
-    });
-    return response.json(specialty);
+
+    try {
+      const body = request.body as IUpdateSpecialtyDTO;
+      const specialty = await this.specialtyService.update(id, body);
+      return response.json(specialty);
+    } catch (error: any) {
+      return response.status(400).json({ message: error.message });
+    }
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {
-    const { id } = request.params ?? "";
+    const { id } = request.params;
     if (!id || typeof id !== "string") {
-      return response.status(400).json({
-        message: "Id invalido",
-      });
+      return response.status(400).json({ message: "Id inválido" });
     }
-    const specialty = await specialtyService.delete(id);
 
-    return response.json(specialty);
+    try {
+      const specialty = await this.specialtyService.delete(id);
+      return response.json(specialty);
+    } catch (error: any) {
+      return response.status(404).json({ message: error.message });
+    }
   }
 }
-
-export default new SpecialtyController();

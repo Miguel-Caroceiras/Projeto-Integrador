@@ -9,11 +9,12 @@ import {
 export class ExpertRepository implements IExpertRepository {
   public async create(data: ICreateExpertDTO): Promise<IExpert> {
     const expert = await ExpertModel.create(data);
-    return expert.toObject(); 
+    return expert.toObject();
   }
 
-  public async findAll(): Promise<IExpert[]> {
-    return await ExpertModel.find().populate("specialty").lean();
+  public async findAll(specialtyId?: string): Promise<IExpert[]> {
+    const filter = specialtyId ? { specialty: specialtyId } : {};
+    return await ExpertModel.find(filter).populate("specialty").lean();
   }
 
   public async findById(id: string): Promise<IExpert | null> {

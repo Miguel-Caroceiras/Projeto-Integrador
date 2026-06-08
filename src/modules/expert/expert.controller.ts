@@ -17,7 +17,10 @@ export class ExpertController {
 
   public async find(request: Request, response: Response): Promise<Response> {
     try {
-      const experts = await this.expertService.findAll();
+      const { specialtyId } = request.query;
+
+      const experts = await this.expertService.findAll(specialtyId as string);
+
       return response.status(200).json(experts);
     } catch (error: any) {
       return response.status(500).json({ message: error.message });
