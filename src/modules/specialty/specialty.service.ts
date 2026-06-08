@@ -1,58 +1,37 @@
-/*
-    Ele sera responsavel por:
-        -Criar Categpria
-        -Listar categoria
-        -Buscar categoria por id
-        atualizar categoria
-        excluir categoria
-        não receve req e res
-        não define rotas
-        não sabe nada de HTTP
-        
-*/
-
-import Specialty from "./specialty.model.js";
-import type {
-  ISpecialty,
+import {
+  ISpecialtyRepository,
   ICreateSpecialtyDTO,
   IUpdateSpecialtyDTO,
-} from "./specialty.types.js";
+  } from "./specialty.types.js";
 
-class SpecialtyService {
+export class SpecialtyService {
+  constructor(private specialtyRepository: ISpecialtyRepository) {}
+
   public async create(data: ICreateSpecialtyDTO) {
-    const specialty = await Specialty.create({
-      name: data.name,
-    });
-
-    return specialty;
+    return await this.specialtyRepository.create(data);
   }
 
   public async find() {
-    return await Specialty.find();
+    return await this.specialtyRepository.findAll();
   }
 
   public async update(id: string, data: IUpdateSpecialtyDTO) {
-    const updatedSpecialty = await Specialty.findByIdAndUpdate(id, data, {
-      returnDocument: "after",
-      runValidators: true,
-    });
+    const updatedSpecialty = await this.specialtyRepository.update(id, data);
 
     if (!updatedSpecialty) {
-      throw new Error("Especialidade não encontrada");
+      throw new Error("Especialidade não encontrada para atualização");
     }
 
     return updatedSpecialty;
   }
 
   public async delete(id: string) {
-    const deletedSpecialty = Specialty.findByIdAndDelete(id);
+    const deletedSpecialty = await this.specialtyRepository.delete(id);
 
     if (!deletedSpecialty) {
-      throw new Error("Especialidade não encontrada");
+      throw new Error("Especialidade não encontrada para exclusão");
     }
 
     return deletedSpecialty;
   }
 }
-
-export default new SpecialtyService();

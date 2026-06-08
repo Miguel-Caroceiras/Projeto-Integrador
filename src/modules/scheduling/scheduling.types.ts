@@ -1,22 +1,28 @@
 import { Types } from "mongoose";
 
 export interface IScheduling {
+  _id?: string;
   dateScheduling: Date;
   status: string;
-  patient: Types.ObjectId;
-  expert: Types.ObjectId;
+  patient: Types.ObjectId | string;
+  expert: Types.ObjectId | string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface ICreateSchedulingDTO {
-  dateScheduling: Date;
+  dateScheduling: Date | string;
   status: string;
-  patient: Types.ObjectId;
-  expert: Types.ObjectId;
+  patient: string;
+  expert: string;
 }
 
-export interface IUpdateSchedulingDTO {
-  dateScheduling?: Date;
-  status?: string;
-  patient?: Types.ObjectId;
-  expert?: Types.ObjectId;
+export interface IUpdateSchedulingDTO extends Partial<ICreateSchedulingDTO> {}
+
+export interface ISchedulingRepository {
+  create(data: ICreateSchedulingDTO): Promise<IScheduling>;
+  find(): Promise<IScheduling[]>;
+  findById(id: string): Promise<IScheduling | null>;
+  update(id: string, data: IUpdateSchedulingDTO): Promise<IScheduling | null>;
+  delete(id: string): Promise<IScheduling | null>;
 }

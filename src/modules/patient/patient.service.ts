@@ -1,102 +1,38 @@
-/*
-    Ele sera responsavel por:
-        -Criar Categpria
-        -Listar categoria
-        -Buscar categoria por id
-        atualizar categoria
-        excluir categoria
-        não receve req e res
-        não define rotas
-        não sabe nada de HTTP
-        
-*/
-
-import { after } from "node:test";
-import Patient from "./patient.model.js";
-import type {
-  IPatient,
+import {
+  IPatientRepository,
   ICreatePatientDTO,
   IUpdatePatientDTO,
 } from "./patient.types.js";
 
-class PatientService {
-  public async create(data: ICreatePatientDTO) {
-    if (data.sex !== "M" && data.sex !== "F" && data.sex !== "O") {
-      console.log("erro no sexo");
-      return;
-    }
-    
-    const patient = await Patient.create({
-      name: data.name,
-      cpf: data.cpf,
-      dateOfBirth: new Date(data.dateOfBirth),
-      email: data.email,
-      phone: data.phone,
-      status: data.status ?? "A",
-      sex: data.sex,
-      address: data?.address,
-    });
+export class PatientService {
+  constructor(private patientRepository: IPatientRepository) {}
 
+  public async create(data: ICreatePatientDTO) {
+    // Aqui você poderia adicionar lógicas, como verificar se o CPF já existe
+    return await this.patientRepository.create(data);
+  }
+
+  public async findAll(name?: string) {
+    return await this.patientRepository.findAll(name);
+  }
+
+  public async findById(id: string) {
+    const patient = await this.patientRepository.findById(id);
+    if (!patient) throw new Error("Paciente não encontrado");
     return patient;
   }
 
-  public async find() {
-    return await Patient.find();
-  }
-
   public async update(id: string, data: IUpdatePatientDTO) {
-    const updatedPatient = await Patient.findByIdAndUpdate(id, data, {
-      returnDocument: "after",
-      runValidators: true,
-    });
-
-    if (!updatedPatient) {
-      throw new Error("Paciente não encontrado");
-    }
-
+    const updatedPatient = await this.patientRepository.update(id, data);
+    if (!updatedPatient)
+      throw new Error("Paciente não encontrado para atualização");
     return updatedPatient;
   }
 
   public async delete(id: string) {
-    const deletedPatient = Patient.findByIdAndDelete(id);
-
-    if (!deletedPatient) {
-      throw new Error("Paciente não encontrado");
-    }
-
+    const deletedPatient = await this.patientRepository.delete(id);
+    if (!deletedPatient)
+      throw new Error("Paciente não encontrado para exclusão");
     return deletedPatient;
   }
-  
-  public validateCpf(cpf: string){
-    cpf = cpf.replace(/\D/g, '');
-
-    if (cpf.length !== 11) return false;
-
-    if (/^(\d)\1+$/.test(cpf)) return false;
-
-    let soma = 0;
-
-    for (let i = 0; i < 9; i++)
-        soma += parseInt(cpf.charAt(i)) * (10 - i);
-
-    let resto = (soma * 10) % 11;
-
-    if (resto === 10) resto = 0;
-
-    if (resto !== parseInt(cpf.charAt(9)))
-        return false;
-
-    soma = 0;
-
-    for (let i = 0; i < 10; i++)
-        soma += parseInt(cpf.charAt(i)) * (11 - i);
-
-    resto = (soma * 10) % 11;
-
-    if (resto === 10) resto = 0;
-
-    return resto === parseInt(cpf.charAt(10));
-  }
 }
-
-export default new PatientService();

@@ -12,18 +12,19 @@ const schedulingSchema = new Schema<IScheduling>(
       type: String,
       required: true,
       trim: true,
+      enum: ["pendente", "cancelado", "confirmado"],
+      default: "pendente",
     },
     expert: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: "Expert"
+      ref: "Expert",
     },
     patient: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: "Patient"
+      ref: "Patient",
     },
-
   },
   {
     timestamps: true,

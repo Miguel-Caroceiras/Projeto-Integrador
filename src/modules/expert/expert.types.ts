@@ -60,7 +60,7 @@ export interface IExpert {
 
 export interface IExpertRepository {
   create(data: ICreateExpertDTO): Promise<IExpert>;
-  findAll(): Promise<IExpert[]>;
+  findAll(specialty?: string): Promise<IExpert[]>;
   findById(id: string): Promise<IExpert | null>;
   update(id: string, data: IUpdateExpertDTO): Promise<IExpert | null>;
   delete(id: string): Promise<IExpert | null>;

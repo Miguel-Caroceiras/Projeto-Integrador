@@ -1,55 +1,60 @@
-// toda vez que bater num endpoint ele rebate aqui
-
 import type { Request, Response } from "express";
-import schedulingService from "./scheduling.service.js";
+import { SchedulingService } from "./scheduling.service.js";
+import {
+  ICreateSchedulingDTO,
+  IUpdateSchedulingDTO,
+} from "./scheduling.types.js";
 
-class SchedulingController {
+export class SchedulingController {
+  constructor(private schedulingService: SchedulingService) {}
+
   public async create(request: Request, response: Response): Promise<Response> {
-    const { dateScheduling, status, patient, expert } = request.body ?? {};
-    const scheduling = await schedulingService.create({
-      dateScheduling,
-      status,
-      expert,
-      patient
-    });
-
-    return response.status(201).json(scheduling);
+    try {
+      const body = request.body as ICreateSchedulingDTO;
+      const scheduling = await this.schedulingService.create(body);
+      return response.status(201).json(scheduling);
+    } catch (error: any) {
+      return response.status(400).json({ message: error.message });
+    }
   }
 
-  public async find(request: Request, response: Response) {
-    const schedulings = await schedulingService.find();
-    return response.status(200).json(schedulings);
+  public async find(request: Request, response: Response): Promise<Response> {
+    try {
+      const schedulings = await this.schedulingService.find();
+      return response.status(200).json(schedulings);
+    } catch (error: any) {
+      return response.status(500).json({ message: error.message });
+    }
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
-    const { id } = request.params ?? "";
-    const { dateScheduling, status, patient, expert } = request.body ?? {};
+    const { id } = request.params;
 
     if (!id || typeof id !== "string") {
-      return response.status(400).json({
-        message: "Id invalido",
-      });
+      return response.status(400).json({ message: "Id invalido" });
     }
-    const scheduling = await schedulingService.update(id, {
-      dateScheduling,
-      status,
-      expert,
-      patient
-    });
-    return response.json(scheduling);
+
+    try {
+      const body = request.body as IUpdateSchedulingDTO;
+      const scheduling = await this.schedulingService.update(id, body);
+      return response.json(scheduling);
+    } catch (error: any) {
+      return response.status(400).json({ message: error.message });
+    }
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {
-    const { id } = request.params ?? "";
-    if (!id || typeof id !== "string") {
-      return response.status(400).json({
-        message: "Id invalido",
-      });
-    }
-    const scheduling = await schedulingService.delete(id);
+    const { id } = request.params;
 
-    return response.json(scheduling);
+    if (!id || typeof id !== "string") {
+      return response.status(400).json({ message: "Id invalido" });
+    }
+
+    try {
+      const scheduling = await this.schedulingService.delete(id);
+      return response.json(scheduling);
+    } catch (error: any) {
+      return response.status(404).json({ message: error.message });
+    }
   }
 }
-
-export default new SchedulingController();

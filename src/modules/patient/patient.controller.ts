@@ -1,71 +1,54 @@
-// toda vez que bater num endpoint ele rebate aqui
-
 import type { Request, Response } from "express";
-import patientService from "./patient.service.js";
+import { PatientService } from "./patient.service.js";
+import { ICreatePatientDTO, IUpdatePatientDTO } from "./patient.types.js";
 
-class PatientController {
+export class PatientController {
+  constructor(private patientService: PatientService) {}
+
   public async create(request: Request, response: Response): Promise<Response> {
-    const { name, cpf, dateOfBirth, email, phone, status, sex, address } = request.body ?? {};
-
-    var cpfIsValid = patientService.validateCpf(cpf);
-
-    if(!cpfIsValid){
-      return response.status(400).json('Cpf inválido, informe novamente ou revise o cpf informado!');
+    try {
+      const body = request.body as ICreatePatientDTO;
+      const patient = await this.patientService.create(body);
+      return response.status(201).json(patient);
+    } catch (error: any) {
+      return response.status(400).json({ message: error.message });
     }
-
-    const patient = await patientService.create({
-      name,
-      cpf,
-      dateOfBirth,
-      email,
-      phone,
-      status,
-      sex,
-      address,
-    });
-
-    return response.status(201).json(patient);
   }
 
-  public async find(request: Request, response: Response) {
-    const patients = await patientService.find();
-    return response.status(200).json(patients);
+  public async find(request: Request, response: Response): Promise<Response> {
+    try {
+      const { name } = request.query;
+      const patients = await this.patientService.findAll(name as string);
+      return response.status(200).json(patients);
+    } catch (error: any) {
+      return response.status(500).json({ message: error.message });
+    }
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
-    const { id } = request.params ?? "";
-    const { name, cpf, dateOfBirth, email, phone, status, address, sex } = request.body;
-    if (!id || typeof id !== "string") {
-      return response.status(400).json({
-        message: "Id invalido",
-      });
-    }
+    const { id } = request.params;
+    if (!id || typeof id !== "string")
+      return response.status(400).json({ message: "Id invalido" });
 
-    const patient = await patientService.update(id, {
-      name,
-      cpf,
-      dateOfBirth,
-      email,
-      phone,
-      status,
-      sex,
-      address
-    });
-    return response.json(patient);
+    try {
+      const body = request.body as IUpdatePatientDTO;
+      const patient = await this.patientService.update(id, body);
+      return response.json(patient);
+    } catch (error: any) {
+      return response.status(400).json({ message: error.message });
+    }
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {
-    const { id } = request.params ?? "";
-    
-    if (!id || typeof id !== "string") {
-      return response.status(400).json({
-        message: "Id invalido",
-      });
-    }
-    const patient = await patientService.delete(id);
+    const { id } = request.params;
+    if (!id || typeof id !== "string")
+      return response.status(400).json({ message: "Id invalido" });
 
-    return response.json(patient);
+    try {
+      const patient = await this.patientService.delete(id);
+      return response.json(patient);
+    } catch (error: any) {
+      return response.status(404).json({ message: error.message });
+    }
   }
 }
-
-export default new PatientController();
