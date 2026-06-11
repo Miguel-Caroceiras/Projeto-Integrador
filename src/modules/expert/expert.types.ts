@@ -1,3 +1,5 @@
+import { IPaginatedResult, FindAllParams } from "../../types/response.types.js";
+
 export interface ICreateExpertDTO {
   name: string;
   cpf: string;
@@ -58,9 +60,18 @@ export interface IExpert {
   updatedAt?: Date;
 }
 
+export interface IFindAllExpertParams extends FindAllParams {
+  specialty?: string | undefined;
+}
+
 export interface IExpertRepository {
   create(data: ICreateExpertDTO): Promise<IExpert>;
-  findAll(specialty?: string): Promise<IExpert[]>;
+  findAll({
+    page,
+    limit,
+    search,
+    specialty,
+  }: IFindAllExpertParams): Promise<IPaginatedResult<IExpert>>;
   findById(id: string): Promise<IExpert | null>;
   update(id: string, data: IUpdateExpertDTO): Promise<IExpert | null>;
   delete(id: string): Promise<IExpert | null>;

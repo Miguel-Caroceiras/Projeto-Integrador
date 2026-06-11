@@ -17,9 +17,11 @@ export class PatientController {
 
   public async find(request: Request, response: Response): Promise<Response> {
     try {
-      const { name } = request.query;
-      const patients = await this.patientService.findAll(name as string);
-      return response.status(200).json(patients);
+      const search = request.query.search as string | undefined;
+      const page = parseInt(request.query.page as string) || 1;
+      const limit = parseInt(request.query.limit as string) || 10;
+      const result = await this.patientService.findAll({ search, page, limit });
+      return response.status(200).json(result);
     } catch (error: any) {
       return response.status(500).json({ message: error.message });
     }

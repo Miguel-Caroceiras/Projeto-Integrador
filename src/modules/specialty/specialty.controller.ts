@@ -17,8 +17,11 @@ export class SpecialtyController {
 
   public async find(request: Request, response: Response): Promise<Response> {
     try {
-      const specialties = await this.specialtyService.find();
-      return response.status(200).json(specialties);
+      const page = parseInt(request.query.page as string) || 1;
+      const limit = parseInt(request.query.limit as string) || 10;
+      const search = request.query.search as string | undefined;
+      const result = await this.specialtyService.findAll({page, limit, search});
+      return response.status(200).json(result);
     } catch (error: any) {
       return response.status(500).json({ message: error.message });
     }

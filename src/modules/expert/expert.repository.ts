@@ -1,9 +1,11 @@
+import { IPaginatedResult } from "../../types/response.types.js";
 import ExpertModel from "./expert.model.js";
 import {
   IExpertRepository,
   ICreateExpertDTO,
   IUpdateExpertDTO,
   IExpert,
+  IFindAllExpertParams,
 } from "./expert.types.js";
 
 export class ExpertRepository implements IExpertRepository {
@@ -12,9 +14,52 @@ export class ExpertRepository implements IExpertRepository {
     return expert.toObject();
   }
 
-  public async findAll(specialtyId?: string): Promise<IExpert[]> {
-    const filter = specialtyId ? { specialty: specialtyId } : {};
-    return await ExpertModel.find(filter).populate("specialty").lean();
+  public async findAll({
+    page,
+    limit,
+    search,
+    specialty,
+  }: IFindAllExpertParams): Promise<IPaginatedResult<IExpert>> {
+    let filter: any = {};
+
+    if (search) {
+      filter = search
+        ? {
+            $or: [
+              { name: { $regex: search, $options: "i" } },
+              { cpf: { $regex: search, $options: "i" } },
+              { email: { $regex: search, $options: "i" } },
+              { phone: { $regex: search, $options: "i" } },
+            ],
+          }
+        : {};
+    }
+
+    if (specialty) {
+      filter.specialty = specialty;
+    }
+
+    const skip = (page - 1) * limit;
+
+    const [itens, totalItens] = await Promise.all([
+      ExpertModel.find(filter)
+        .populate("specialty")
+        .skip(skip)
+        .limit(limit)
+        .sort({ createdAt: -1 })
+        .lean(),
+
+      ExpertModel.countDocuments(filter),
+    ]);
+
+    const totalPages = Math.ceil(totalItens / limit);
+
+    return {
+      itens,
+      totalItens,
+      totalPages,
+      currentPage: page,
+    };
   }
 
   public async findById(id: string): Promise<IExpert | null> {
