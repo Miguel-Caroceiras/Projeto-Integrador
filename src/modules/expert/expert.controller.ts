@@ -17,11 +17,20 @@ export class ExpertController {
 
   public async find(request: Request, response: Response): Promise<Response> {
     try {
-      const { specialtyId } = request.query;
+      const specialtyId = request.query.specialtyId as string | undefined;
+      const search = request.query.search as string | undefined;
 
-      const experts = await this.expertService.findAll(specialtyId as string);
+      const page = parseInt(request.query.page as string) || 1;
+      const limit = parseInt(request.query.limit as string) || 10;
 
-      return response.status(200).json(experts);
+      const result = await this.expertService.findAll({
+        page,
+        limit,
+        search,
+        specialty: specialtyId, 
+      });
+
+      return response.status(200).json(result);
     } catch (error: any) {
       return response.status(500).json({ message: error.message });
     }

@@ -1,3 +1,5 @@
+import { IPaginatedResult } from "../../types/request.types.js";
+
 export interface IAddress {
   cep: string;
   city: string;
@@ -31,7 +33,11 @@ export interface IUpdatePatientDTO extends Partial<ICreatePatientDTO> {}
 
 export interface IPatientRepository {
   create(data: ICreatePatientDTO): Promise<IPatient>;
-  findAll(name?: string): Promise<IPatient[]>;
+  findAll(
+    page?: number,
+    limit?: number,
+    search?: string,
+  ): Promise<IPaginatedResult<IPatient>>;
   findById(id: string): Promise<IPatient | null>;
   update(id: string, data: IUpdatePatientDTO): Promise<IPatient | null>;
   delete(id: string): Promise<IPatient | null>;

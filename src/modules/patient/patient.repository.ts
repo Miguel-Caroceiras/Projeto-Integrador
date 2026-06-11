@@ -6,15 +6,47 @@ import {
   IPatient,
 } from "./patient.types.js";
 
+import { IPaginatedResult } from "../../types/response.types.js";
 export class PatientRepository implements IPatientRepository {
   public async create(data: ICreatePatientDTO): Promise<IPatient> {
     const patient = await PatientModel.create(data);
     return patient.toObject();
   }
 
-  public async findAll(name?: string): Promise<IPatient[]> {
-    const filter = name ? { name: { $regex: name, $options: "i" } } : {};
-    return await PatientModel.find(filter).lean();
+  public async findAll(
+    page: number = 1,
+    limit: number = 10,
+    search?: string,
+  ): Promise<IPaginatedResult<IPatient>> {
+    const filter = search
+      ? {
+          $or: [
+            { name: { $regex: search, $options: "i" } },
+            { cpf: { $regex: search, $options: "i" } },
+            { email: { $regex: search, $options: "i" } },
+            { phone: { $regex: search, $options: "i" } },
+          ],
+        }
+      : {};
+    const skip = (page - 1) * limit;
+
+    const [itens, totalItens] = await Promise.all([
+      PatientModel.find(filter)
+        .skip(skip)
+        .limit(limit)
+        .sort({ createdAt: -1 })
+        .lean(),
+
+      PatientModel.countDocuments(filter),
+    ]);
+
+    const totalPages = Math.ceil(totalItens / limit);
+    return {
+      itens,
+      totalItens,
+      totalPages,
+      currentPage: page,
+    };
   }
 
   public async findById(id: string): Promise<IPatient | null> {
@@ -31,4 +63,5 @@ export class PatientRepository implements IPatientRepository {
   public async delete(id: string): Promise<IPatient | null> {
     return await PatientModel.findByIdAndDelete(id).lean();
   }
+  
 }

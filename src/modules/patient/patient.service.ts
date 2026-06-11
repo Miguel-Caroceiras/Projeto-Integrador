@@ -3,17 +3,23 @@ import {
   ICreatePatientDTO,
   IUpdatePatientDTO,
 } from "./patient.types.js";
+import { IPaginatedResult } from "../../types/response.types.js";
+import { IPatient } from "./patient.types.js";
+import { FindAllParams } from "../../types/response.types.js";
 
 export class PatientService {
   constructor(private patientRepository: IPatientRepository) {}
 
   public async create(data: ICreatePatientDTO) {
-    // Aqui você poderia adicionar lógicas, como verificar se o CPF já existe
     return await this.patientRepository.create(data);
   }
 
-  public async findAll(name?: string) {
-    return await this.patientRepository.findAll(name);
+  public async findAll({
+    search,
+    page,
+    limit,
+  }: FindAllParams): Promise<IPaginatedResult<IPatient>> {
+    return await this.patientRepository.findAll(page, limit, search);
   }
 
   public async findById(id: string) {

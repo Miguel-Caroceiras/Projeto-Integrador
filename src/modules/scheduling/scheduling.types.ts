@@ -1,4 +1,6 @@
 import { Types } from "mongoose";
+import { IPaginatedResult } from "../../types/response.types.js";
+import { FindAllParams } from "../../types/response.types.js";
 
 export interface IScheduling {
   _id?: string;
@@ -21,7 +23,11 @@ export interface IUpdateSchedulingDTO extends Partial<ICreateSchedulingDTO> {}
 
 export interface ISchedulingRepository {
   create(data: ICreateSchedulingDTO): Promise<IScheduling>;
-  find(): Promise<IScheduling[]>;
+  findAll({
+    page,
+    limit,
+    search,
+  }: FindAllParams): Promise<IPaginatedResult<IScheduling>>;
   findById(id: string): Promise<IScheduling | null>;
   update(id: string, data: IUpdateSchedulingDTO): Promise<IScheduling | null>;
   delete(id: string): Promise<IScheduling | null>;

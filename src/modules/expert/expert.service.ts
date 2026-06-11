@@ -2,6 +2,7 @@ import {
   IExpertRepository,
   ICreateExpertDTO,
   IUpdateExpertDTO,
+  IFindAllExpertParams,
 } from "./expert.types.js";
 
 export class ExpertService {
@@ -11,8 +12,18 @@ export class ExpertService {
     return await this.expertRepository.create(data);
   }
 
-  public async findAll(specialtyId?: string) {
-    return await this.expertRepository.findAll(specialtyId);
+  public async findAll({
+    page,
+    limit,
+    search,
+    specialty,
+  }: IFindAllExpertParams) {
+    return await this.expertRepository.findAll({
+      page,
+      limit,
+      search,
+      specialty,
+    });
   }
 
   public async findById(id: string) {

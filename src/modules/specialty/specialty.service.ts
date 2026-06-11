@@ -1,8 +1,9 @@
+import { FindAllParams } from "../../types/response.types.js";
 import {
   ISpecialtyRepository,
   ICreateSpecialtyDTO,
   IUpdateSpecialtyDTO,
-  } from "./specialty.types.js";
+} from "./specialty.types.js";
 
 export class SpecialtyService {
   constructor(private specialtyRepository: ISpecialtyRepository) {}
@@ -11,8 +12,8 @@ export class SpecialtyService {
     return await this.specialtyRepository.create(data);
   }
 
-  public async find() {
-    return await this.specialtyRepository.findAll();
+  public async findAll({ page, limit, search }: FindAllParams) {
+    return await this.specialtyRepository.findAll(page, limit, search);
   }
 
   public async update(id: string, data: IUpdateSpecialtyDTO) {

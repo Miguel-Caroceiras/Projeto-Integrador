@@ -20,7 +20,14 @@ export class SchedulingController {
 
   public async find(request: Request, response: Response): Promise<Response> {
     try {
-      const schedulings = await this.schedulingService.find();
+      const page = parseInt(request.query.page as string) || 1;
+      const limit = parseInt(request.query.limit as string) || 10;
+      const search = request.query.search as string | undefined;
+      const schedulings = await this.schedulingService.findAll({
+        page,
+        limit,
+        search,
+      });
       return response.status(200).json(schedulings);
     } catch (error: any) {
       return response.status(500).json({ message: error.message });
