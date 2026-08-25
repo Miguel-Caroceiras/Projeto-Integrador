@@ -1,6 +1,7 @@
 // Endpoint geral 
 
 // nome do type que vai ser exportada
+import { application } from "express";
 import swaggerJSDoc from "swagger-jsdoc";
 /* Obrigatorio: title e version. Ex:
 
@@ -36,7 +37,7 @@ const option: swaggerJSDoc.Options = {
                 get:{
                     summary: "Resgatar dados do paciente",
                     description: "Endpoint para buscar os dados dos pacientes registrados no banco",
-                    tags:["teste"],
+                    tags:["Paciente"],
                     responses:{
                         200: {
                             description: "Estatisticas recuperadas com sucesso",
@@ -60,7 +61,7 @@ const option: swaggerJSDoc.Options = {
                                     schema:{
                                         type: "object",
                                         properties:{
-                                            message:{type:"string", example:"Patient validation failed: 'cpf' is required"},
+                                            message:{type:"string", example:"Patient validation failed: 'cpf' is required"}
                                         }
                                     }
                                 }
@@ -70,8 +71,8 @@ const option: swaggerJSDoc.Options = {
                 },
                 post:{
                     summary: "Subir dados do paciente",
-                    description: "Teste",
-                    tags:["teste"],
+                    description: "Insere dados no banco de dados recebendo um body em json",
+                    tags:["Paciente"],
                     responses:{
                         201:{
                             description:"Created - Paciente criado com sucesso",
@@ -106,15 +107,48 @@ const option: swaggerJSDoc.Options = {
                     }
                 },
                 put:{
-                    summary:"",
-                    description:"",
+                    summary:"Atualizar os dados do paciente",
+                    description:"Atualiza as informações de um paciente específico com o id dele",
+                    tags:["Paciente"],
                     responses:{
-                        get:{}
+                        400:{
+                            description:"Bad request - Informações faltantes ou com formatação diferente do esperado",
+                            content:{
+                                "aplication/json":{
+                                    schema:{
+                                        type:"object",
+                                        properties:{
+                                            message:{type:"string", example:"Patient validation failed: 'cpf' is required"}
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                delete:{
+                    summary:"Apagar paciente",
+                    description:"Busca um paciente no banco de dados e apaga todas as suas informações",
+                    tags:["Paciente"],
+                    responses:{
+                        400:{
+                            description:"Bad request - Informações faltantes ou com formatação diferente do esperado",
+                            content:{
+                                "aplication/json":{
+                                    schema:{
+                                        type:"object",
+                                        properties:{
+                                            message:{type:"string", example:"Patient validation failed: 'cpf' is required"}
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
 
-        }
+        },
     },
     apis:[], //pesquisar melhor
 };

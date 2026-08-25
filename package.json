@@ -4,7 +4,7 @@
   "description": "--inicio do projeto--",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "dev": "tsx --watch --env-file=.env src/server.ts",
     "check": "biome check --write ./src",
     "format": "biome format --write ./src",
@@ -30,6 +30,7 @@
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
     "eslint": "^10.8.1",
+    "jest": "^30.4.2",
     "ts-node-dev": "^2.0.0",
     "tsx": "^4.21.0",
     "typescript": "^6.0.3"
